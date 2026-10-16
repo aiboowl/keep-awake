@@ -353,6 +353,23 @@ struct AwakeApp: App {
 enum EntryPoint {
     @MainActor static func main() {
         if CommandLine.arguments.contains("--self-test") {
+            // Deterministic checks also run on CI VMs without physical power controls.
+            guard let script = Controller.scriptURL,
+                  FileManager.default.fileExists(atPath: script.path),
+                  Bundle.main.url(forResource: "AppIcon", withExtension: "icns") != nil,
+                  let off = PowerSnapshot("SleepDisabled=0\nPasswordless=0"),
+                  let eco = PowerSnapshot("работает (caffeinate)\nSleepDisabled=1\nPasswordless=1\nИсходная настройка для stop: 0\nEcoLimit=20\nBatteryGuard=1\nNow drawing from 'AC Power'\n80%"),
+                  !off.idle, !off.lid, !off.passwordless,
+                  eco.idle, eco.lid, eco.passwordless, eco.ownsSetting,
+                  eco.ecoLimit == 20, eco.batteryGuard, eco.charging, eco.battery == "80%",
+                  PowerSnapshot("SleepDisabled=unknown") == nil else {
+                fputs("Bundle or status parser self-test failed.\n", stderr)
+                exit(1)
+            }
+            print("Bundle resources and status parser passed.")
+            return
+        }
+        if CommandLine.arguments.contains("--diagnose") {
             let result = Controller.run(["status"])
             guard result.code == 0, let state = PowerSnapshot(result.output) else {
                 fputs(result.output, stderr)

@@ -30,6 +30,9 @@ done
 /usr/bin/codesign --verify --deep --strict "$BUNDLE"
 "$BUNDLE/Contents/Resources/BatteryGuard" --self-test
 "$BUNDLE/Contents/MacOS/KeepAwake" --self-test
+if [ "${CI:-false}" != true ]; then
+    "$BUNDLE/Contents/MacOS/KeepAwake" --diagnose
+fi
 # Only replace the generated output after all checks succeed.
 /bin/rm -rf "$APP"
 /bin/mv "$BUNDLE" "$APP"
