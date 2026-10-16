@@ -9,7 +9,7 @@
 ## Скачать и запустить
 
 1. Откройте [последний релиз](https://github.com/aiboowl/keep-awake/releases/latest).
-2. Скачайте `KeepAwake-1.1.1-universal.zip` из раздела **Assets** и распакуйте.
+2. Скачайте `KeepAwake-1.1.2-universal.zip` из раздела **Assets** и распакуйте.
 3. Перенесите **Не засыпать.app** в папку «Программы» и откройте.
 4. Выберите нужный режим. При первом включении полного или эко-режима macOS
    попросит пароль администратора для однократной настройки.
@@ -74,7 +74,7 @@ bash scripts/install.sh
 
 Сборка без установки: `bash scripts/build.sh`. Результат — `build/Не засыпать.app`.
 Создание распространяемого архива: `bash scripts/package.sh`.
-Результат — `dist/KeepAwake-1.1.1-universal.zip` и `dist/SHA256SUMS.txt`.
+Результат — `dist/KeepAwake-1.1.2-universal.zip` и `dist/SHA256SUMS.txt`.
 
 ## Управление из Terminal
 

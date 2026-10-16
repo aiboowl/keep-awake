@@ -99,8 +99,10 @@ final class AwakeModel: ObservableObject {
         Task { await refresh() }
         timer = Timer.scheduledTimer(withTimeInterval: 60, repeats: true) { [weak self] _ in
             // Hidden/inactive windows do not spawn shell processes on a timer.
-            guard NSApplication.shared.isActive else { return }
-            Task { @MainActor in await self?.refresh() }
+            Task { @MainActor [weak self] in
+                guard NSApplication.shared.isActive else { return }
+                await self?.refresh()
+            }
         }
         timer?.tolerance = 15
     }
